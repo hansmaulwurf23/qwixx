@@ -17,6 +17,9 @@ createApp({
             pointsMap: [0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78],
         }
     },
+    // TODO:
+    // - error handling
+    // - points are basically n(n+1)/2
     methods: {
         markNumber(color, number) {
             nos = this.numbers[color];
