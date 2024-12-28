@@ -23,7 +23,7 @@
                     <i class="fa-solid" :class="getLock(cidx)"></i></button>
         </div>
         <div class="panelrow">
-            <div class="rounded-2 border border-secondary legend">
+            <div class="rounded-2 border border-light legend ms-2">
                 Kreuze<hr/>Punkte
             </div>
             <template v-for="(v, i) in pointsMap">
@@ -39,12 +39,12 @@
         <div class="p-1 m-1 panelrow scorerow">
             Ergebnis:
             <template v-for="(col, cidx) in numbers">
-                <div class="mx-2 rounded-2 numbtn bg-light border" :class="getBorderColor(cidx)">{{ getColorScore(cidx) }}</div>
+                <div class="mx-2 rounded-2 numbtn bg-light border align-middle" :class="getBorderColor(cidx)"><p>{{ getColorScore(cidx) }}</p></div>
                 {{ cidx < 3 ? '+' : '-'}}
             </template>
-            <div class="mx-2 rounded-2 numbtn bg-light border border-secondary">{{ getFailPoints() }}</div>
+            <div class="mx-2 rounded-2 numbtn bg-light border border-secondary"><p>{{ getFailPoints() }}</p></div>
             =
-            <div class="mx-2 rounded-2 numbtn bg-light border border-secondary">{{ getScore() }}</div>
+            <div class="mx-2 rounded-2 numbtn bg-light border border-secondary"><p>{{ getScore() }}</p></div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>

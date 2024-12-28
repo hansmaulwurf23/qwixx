@@ -15,6 +15,7 @@ hr {
 .panelrow {
     display: flex;
     flex-direction: row;
+    align-items: center;
 }
 
 .legend {
@@ -36,7 +37,12 @@ hr {
     background-color: var(--bs-gray-300);
 }
 
-.scores {
-    text-align: center;
+.scorerow div {
+    display: table;
+}
+
+.scorerow div p {
     vertical-align: middle;
+    display: table-cell;
+    text-align: center;
 }

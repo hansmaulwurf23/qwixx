@@ -32,13 +32,16 @@ createApp({
         },
         markLock(color) {
             if (this.locks[color]) {
-                throw new Error('Es wurde bereits gelockt!');
+                throw new Error('Diese Farbe wurde bereits gelockt!');
             }
             if (this.getColorNumbers(color) < 5) {
                 throw new Error('Es sind nicht mindestens 5 Zahlen eingelockt!');
             }
-            if (!this.numbers[color][-1]) {
+            if (!this.numbers[color].at(-1)) {
                 throw new Error('Der letzte Kasten muss angekreuzt sein!');
+            }
+            if (this.locks.filter((l) => l === true).length === 2) {
+                throw new Error('Es sind bereits zwei Reihen gelockt!');
             }
             this.locks[color] = true;
         },
@@ -55,7 +58,7 @@ createApp({
             return this.pointsMap[this.getColorNumbers(color) + (this.locks[color] ? 1 : 0)];
         },
         getFailPoints() {
-            return this.fails;
+            return this.fails * 5;
         },
         getScore() {
             score = -this.getFailPoints();
