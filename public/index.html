@@ -39,12 +39,12 @@
         <div class="p-1 m-1 panelrow scorerow">
             Ergebnis:
             <template v-for="(col, cidx) in numbers">
-                <div class="mx-2 rounded-2 numbtn bg-light border align-middle" :class="getBorderColor(cidx)"><p>{{ getColorScore(cidx) }}</p></div>
+                <div class="mx-2 rounded-2 numbtn bg-light border border-2 align-middle" :class="getBorderColor(cidx)"><p>{{ getColorScore(cidx) }}</p></div>
                 {{ cidx < 3 ? '+' : '-'}}
             </template>
-            <div class="mx-2 rounded-2 numbtn bg-light border border-secondary"><p>{{ getFailPoints() }}</p></div>
+            <div class="mx-2 rounded-2 numbtn bg-light border border-2 border-secondary"><p>{{ getFailPoints() }}</p></div>
             =
-            <div class="mx-2 rounded-2 numbtn bg-light border border-secondary"><p>{{ getScore() }}</p></div>
+            <div class="mx-2 rounded-2 numbtn bg-light border border-2 border-secondary"><p>{{ getScore() }}</p></div>
         </div>
     </div>
     <script src="https://cdn.jsdelivr.net/npm/vue@3"></script>
