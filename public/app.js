@@ -1,6 +1,6 @@
 const { createApp } = Vue;
 
-createApp({
+const vueapp = createApp({
     data() {
         return {
             numbers: [
@@ -25,29 +25,29 @@ createApp({
             nos = this.numbers[color];
             right = nos.slice(number);
             if (right.some((x) => x === true)) {
-                throw new Error('Es wurde bereits weiter rechts markiert!');
+                return alert('Es wurde bereits weiter rechts markiert!');
             }
 
             nos[number] = true;
         },
         markLock(color) {
             if (this.locks[color]) {
-                throw new Error('Diese Farbe wurde bereits gelockt!');
+                return alert('Diese Farbe wurde bereits gelockt!');
             }
             if (this.getColorNumbers(color) < 5) {
-                throw new Error('Es sind nicht mindestens 5 Zahlen eingelockt!');
+                return alert('Es sind nicht mindestens 5 Zahlen eingelockt!');
             }
             if (!this.numbers[color].at(-1)) {
-                throw new Error('Der letzte Kasten muss angekreuzt sein!');
+                return alert('Der letzte Kasten muss angekreuzt sein!');
             }
             if (this.locks.filter((l) => l === true).length === 2) {
-                throw new Error('Es sind bereits zwei Reihen gelockt!');
+                return alert('Es sind bereits zwei Reihen gelockt!');
             }
             this.locks[color] = true;
         },
         markFail() {
-            if (this.fails == 4) {
-                throw new Error('Es sind nur 4 Fehlversuche erlaubt!');
+            if (this.fails === 4) {
+                return alert('Es sind nur 4 Fehlversuche erlaubt!');
             }
             this.fails += 1;
         },
