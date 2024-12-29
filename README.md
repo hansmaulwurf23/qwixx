@@ -1,2 +1,2 @@
 # qwixx
-A PWA Petitvue Qwixx Score Card
+A PWA vue Qwixx Score Card
