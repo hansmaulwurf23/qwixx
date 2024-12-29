@@ -1,0 +1,17 @@
+@import './base.css';
+@import "../../node_modules/bootstrap/scss/bootstrap.scss";
+
+main {
+    display: flex;
+    justify-content: space-between;
+}
+
+.squarebtn {
+    @extend .btn;
+    width: 3rem;
+    height: 3rem;
+    font-size: 1.5rem;
+    font-weight: bold;
+    text-align: center;
+    vertical-align: middle;
+}

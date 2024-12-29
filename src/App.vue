@@ -1,5 +1,6 @@
 <script setup>
 import TheBoard from './components/TheBoard.vue'
+import TheControls from "@/components/TheControls.vue"
 </script>
 
 <template>
@@ -7,6 +8,7 @@ import TheBoard from './components/TheBoard.vue'
   </header>
 
   <main>
-    <TheBoard />
+    <TheBoard/>
+    <TheControls/>
   </main>
 </template>
