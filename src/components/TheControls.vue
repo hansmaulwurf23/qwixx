@@ -7,10 +7,10 @@ const store = useBoardStore()
 
 <template>
   <div class="controlsContainer">
-    <button class="squarebtn btn-secondary m-1">
+    <button class="squarebtn btn-secondary m-1" @click="store.newGame()">
       <svg-icon type="mdi" :path="mdiNewBox"></svg-icon>
     </button>
-    <button class="squarebtn btn-secondary m-1">
+    <button class="squarebtn btn-secondary m-1" @click="store.undo()">
       <svg-icon type="mdi" :path="mdiUndo"></svg-icon>
     </button>
     <button class="squarebtn m-1" v-for="(c, i) in store.colors" :class="['bg-' + c, 'text-white']"

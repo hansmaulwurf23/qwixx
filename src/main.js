@@ -19,9 +19,26 @@ export const useBoardStore = defineStore("boardStore", () => {
   ]);
 
   const locks = ref(new Array(4).fill(false))
+  const otherLocks = ref(new Array(4).fill(false))
   const fails = ref(0)
   const colors = ref(['danger', 'warning', 'success', 'primary'])
   const pointsMap = ref([0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78])
+  const undoStack = ref([])
+
+  function newGame() {
+    for (let i = 0; i < this.numbers.length; i++) {
+      for (let j = 0; j <  this.numbers[i].length; j++) {
+        this.numbers[i][j] = false;
+      }
+    }
+
+    this.fails = 0;
+    this.undoStack = ref([])
+    for(let i = 0; i < this.locks.length; i++) {
+      this.locks[i] = false;
+      this.otherLocks[i] = false;
+    }
+  }
 
   function markNumber(color, number) {
     if (this.locks[color]) {
@@ -32,6 +49,7 @@ export const useBoardStore = defineStore("boardStore", () => {
       return alert('Es wurde bereits weiter rechts markiert!');
     }
 
+    this.undoStack.push(['number', color, number]);
     numbers[number] = true;
   }
 
@@ -48,11 +66,15 @@ export const useBoardStore = defineStore("boardStore", () => {
     if (this.locks.filter((l) => l === true).length === 2) {
       return alert('Es sind bereits zwei Reihen gelockt!');
     }
+
+    this.undoStack.push(['lock', color, undefined]);
     this.locks[color] = true;
   }
 
   function markLockGlobally(color) {
     this.locks[color] = true;
+    this.otherLocks[color] = true;
+    this.undoStack.push(['globalLock', color, undefined]);
   }
 
   function markFail() {
@@ -60,6 +82,7 @@ export const useBoardStore = defineStore("boardStore", () => {
       return alert('Es sind nur 4 Fehlversuche erlaubt!');
     }
     this.fails += 1;
+    this.undoStack.push(['fail', undefined, undefined]);
   }
 
   function countColorMarks(color) {
@@ -67,7 +90,7 @@ export const useBoardStore = defineStore("boardStore", () => {
   }
 
   function getColorScore(color) {
-    return this.pointsMap[this.countColorMarks(color) + (this.locks[color] ? 1 : 0)];
+    return this.pointsMap[this.countColorMarks(color) + (this.locks[color] && !this.otherLocks[color] ? 1 : 0)];
   }
 
   function getFailPoints() {
@@ -82,12 +105,31 @@ export const useBoardStore = defineStore("boardStore", () => {
     return score;
   }
 
+  function undo() {
+    if (this.undoStack.length > 0) {
+      let [action, arg1, arg2] = this.undoStack.pop();
+      if (action === 'fail') {
+        this.fails -= 1;
+      } else if (action === 'globalLock') {
+        this.locks[arg1] = false;
+        this.otherLocks[arg1] = false;
+      } else if (action === 'lock') {
+        this.locks[arg1] = false;
+      } else if (action === 'number') {
+        this.numbers[arg1][arg2] = false;
+      }
+    }
+  }
+
   return {
     numbers,
     locks,
+    otherLocks,
     fails,
     colors,
     pointsMap,
+    undoStack,
+    newGame,
     markNumber,
     markLock,
     markLockGlobally,
@@ -95,7 +137,8 @@ export const useBoardStore = defineStore("boardStore", () => {
     countColorMarks,
     getColorScore,
     getFailPoints,
-    getScore
+    getScore,
+    undo
   };
 })
 
