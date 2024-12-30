@@ -7,14 +7,14 @@ const store = useBoardStore();
 
 <template>
   <div id="boardContainer">
-    <div v-for="(col, cidx) in store.numbers" class="p-1 m-1 panelrow" :class="['bg-' + store.colors[cidx]]">
+    <div v-for="(colNumbers, cidx) in store.numbers" class="p-1 m-1 panelrow" :class="['bg-' + store.colors[cidx]]">
       <button @click="store.markNumber(cidx, i)"
-              v-for="(v, i) in store.numbers[cidx]"
+              v-for="(v, i) in colNumbers"
               :class="[v ? 'btn-secondary' : 'btn-light', 'text-' + store.colors[cidx]]"
               class="squarebtn m-1">{{ cidx < 2 ? i + 2 : 12 - i }}
       </button>
       <button @click="store.markLock(cidx)"
-              :class="store.locks[cidx] ? 'btn-secondary' : 'btn-light'"
+              :class="[store.locks[cidx] ? 'btn-secondary' : 'btn-light', 'text-' + store.colors[cidx]]"
               class="squarebtn m-1 rounded-circle">
         <svg-icon type="mdi" :path="store.locks[cidx] ? mdiLock : mdiLockOpen"></svg-icon>
       </button>
@@ -32,7 +32,7 @@ const store = useBoardStore();
           {{ v }}
         </div>
       </template>
-      <button v-for="(v, i) in 4"
+      <button v-for="v in 4"
               @click="store.markFail()"
               :class="store.fails >= v ? 'btn-secondary': 'btn-light'"
               class="btn-outline-secondary squarebtn m-1">&nbsp;
@@ -40,8 +40,8 @@ const store = useBoardStore();
     </div>
     <div class="p-1 m-1 panelrow scorerow">
       Ergebnis
-      <template v-for="(col, cidx) in store.numbers">
-        <div class="mx-2 rounded-2 squarebtn bg-light border border-2 align-middle" :class="['border-' + store.colors[cidx]]"><p>
+      <template v-for="(color, cidx) in store.colors">
+        <div class="mx-2 rounded-2 squarebtn bg-light border border-2 align-middle" :class="['border-' + color]"><p>
           {{ store.getColorScore(cidx) }}</p></div>
         {{ cidx < 3 ? '+' : '-' }}
       </template>

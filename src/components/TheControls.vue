@@ -1,5 +1,5 @@
 <script setup>
-import {mdiNewBox, mdiUndo, mdiAccountLock} from '@mdi/js'
+import {mdiRestart, mdiUndo, mdiAccountLock} from '@mdi/js'
 import {useBoardStore} from "@/main.js";
 
 const store = useBoardStore()
@@ -8,7 +8,7 @@ const store = useBoardStore()
 <template>
   <div class="controlsContainer">
     <button class="squarebtn btn-secondary m-1" @click="store.newGame()">
-      <svg-icon type="mdi" :path="mdiNewBox"></svg-icon>
+      <svg-icon type="mdi" :path="mdiRestart"></svg-icon>
     </button>
     <button class="squarebtn btn-secondary m-1" @click="store.undo()">
       <svg-icon type="mdi" :path="mdiUndo"></svg-icon>
