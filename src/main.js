@@ -25,6 +25,8 @@ export const useBoardStore = defineStore("boardStore", () => {
   const pointsMap = ref([0, 1, 3, 6, 10, 15, 21, 28, 36, 45, 55, 66, 78])
   const undoStack = ref([])
 
+  const currentError = ref("")
+
   function newGame() {
     for (let i = 0; i < this.numbers.length; i++) {
       for (let j = 0; j <  this.numbers[i].length; j++) {
@@ -42,11 +44,11 @@ export const useBoardStore = defineStore("boardStore", () => {
 
   function markNumber(color, number) {
     if (this.locks[color]) {
-      return alert('Die Farbe ist bereits gelockt!');
+      return this.setError('Die Farbe ist bereits gelockt!');
     }
     let numbers = this.numbers[color];
     if (numbers.slice(number).some((x) => x === true)) {
-      return alert('Es wurde bereits weiter rechts markiert!');
+      return this.setError('Es wurde bereits weiter rechts markiert!');
     }
 
     this.undoStack.push(['number', color, number]);
@@ -55,16 +57,16 @@ export const useBoardStore = defineStore("boardStore", () => {
 
   function markLock(color) {
     if (this.locks[color]) {
-      return alert('Diese Farbe wurde bereits gelockt!');
+      return this.setError('Diese Farbe wurde bereits gelockt!');
     }
     if (this.countColorMarks(color) < 5) {
-      return alert('Es sind nicht mindestens 5 Zahlen eingelockt!');
+      return this.setError('Es sind nicht mindestens 5 Zahlen eingelockt!');
     }
     if (!this.numbers[color].at(-1)) {
-      return alert('Der letzte Kasten muss angekreuzt sein!');
+      return this.setError('Der letzte Kasten muss angekreuzt sein!');
     }
     if (this.locks.filter((l) => l === true).length === 2) {
-      return alert('Es sind bereits zwei Reihen gelockt!');
+      return this.setError('Es sind bereits zwei Reihen gelockt!');
     }
 
     this.undoStack.push(['lock', color, undefined]);
@@ -79,7 +81,7 @@ export const useBoardStore = defineStore("boardStore", () => {
 
   function markFail() {
     if (this.fails === 4) {
-      return alert('Es sind nur 4 Fehlversuche erlaubt!');
+      return this.setError('Es sind nur 4 Fehlversuche erlaubt!');
     }
     this.fails += 1;
     this.undoStack.push(['fail', undefined, undefined]);
@@ -121,6 +123,14 @@ export const useBoardStore = defineStore("boardStore", () => {
     }
   }
 
+  function setError(msg) {
+    this.currentError = msg;
+  }
+
+  function unsetError() {
+    this.currentError = undefined;
+  }
+
   return {
     numbers,
     locks,
@@ -129,6 +139,7 @@ export const useBoardStore = defineStore("boardStore", () => {
     colors,
     pointsMap,
     undoStack,
+    currentError,
     newGame,
     markNumber,
     markLock,
@@ -138,7 +149,9 @@ export const useBoardStore = defineStore("boardStore", () => {
     getColorScore,
     getFailPoints,
     getScore,
-    undo
+    undo,
+    setError,
+    unsetError
   };
 })
 

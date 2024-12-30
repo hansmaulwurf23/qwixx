@@ -39,3 +39,14 @@ main {
     text-align: center;
     vertical-align: middle;
 }
+
+#myErrorAlert {
+    @extend .border;
+    @extend .border-3;
+    @extend .border-dark;
+    @extend .alert;
+    @extend .alert-dismissible;
+    @extend .fade;
+    @extend .fixed-top;
+    @extend .bg-warning;
+}
