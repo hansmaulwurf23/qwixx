@@ -1,4 +1,28 @@
 @import './base.css';
+
+// required to get $orange variable
+@import "../../node_modules/bootstrap/scss/functions";
+@import "../../node_modules/bootstrap/scss/variables";
+
+/* via color picker from here: https://de.wikipedia.org/wiki/Qwixx#/media/Datei:Qwixx_scorecard_nofonts.svg */
+$primary: #36498c;
+$danger: #d83d4b;
+$success: #3fa05b;
+$warning: #fee549;
+
+$primary-bg-subtle: #2d2e4b;
+$danger-bg-subtle: #943037;
+$success-bg-subtle: #3f7c52;
+$warning-bg-subtle: #d8a352;
+
+// merge with existing $theme-colors map
+$theme-colors: map-merge($theme-colors, (
+  "primary": $primary,
+  "danger": $danger,
+  "success": $success,
+  "warning": $warning
+));
+
 @import "../../node_modules/bootstrap/scss/bootstrap.scss";
 
 main {
