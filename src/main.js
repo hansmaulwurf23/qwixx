@@ -37,7 +37,7 @@ export const useBoardStore = defineStore("boardStore", () => {
     }
 
     this.fails = 0;
-    this.undoStack = ref([])
+    this.undoStack.length = 0;
     for(let i = 0; i < this.locks.length; i++) {
       this.locks[i] = false;
       this.otherLocks[i] = false;
