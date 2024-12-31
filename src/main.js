@@ -2,10 +2,12 @@ import './assets/main.scss'
 
 import {createApp, ref} from 'vue'
 import {createPinia, defineStore} from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import SvgIcon from "vue3-icon"
 import App from './App.vue'
 
 const pinia = createPinia()
+pinia.use(piniaPluginPersistedstate)
 const app = createApp(App);
 app.component("svg-icon", SvgIcon);
 app.use(pinia);
@@ -152,7 +154,9 @@ export const useBoardStore = defineStore("boardStore", () => {
     undo,
     setError,
     unsetError
-  };
+  }
+},{
+    persist: true,
 })
 
 
