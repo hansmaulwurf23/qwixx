@@ -67,7 +67,7 @@ export const useBoardStore = defineStore("boardStore", () => {
     if (!this.numbers[color].at(-1)) {
       return this.setError('Der letzte Kasten muss angekreuzt sein!');
     }
-    if (this.locks.filter((l) => l === true).length === 2) {
+    if (this.isFinished()) {
       return this.setError('Es sind bereits zwei Reihen gelockt!');
     }
 
@@ -107,6 +107,10 @@ export const useBoardStore = defineStore("boardStore", () => {
       score += this.getColorScore(i);
     }
     return score;
+  }
+
+  function isFinished() {
+    return this.locks.filter((l) => l === true).length === 2
   }
 
   function undo() {
@@ -151,6 +155,7 @@ export const useBoardStore = defineStore("boardStore", () => {
     getColorScore,
     getFailPoints,
     getScore,
+    isFinished,
     undo,
     setError,
     unsetError

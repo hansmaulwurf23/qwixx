@@ -1,6 +1,7 @@
 <script setup>
 import {mdiLock, mdiLockOpen} from '@mdi/js';
 import {useBoardStore} from "@/main.js";
+import ThePointsLegend from "@/components/ThePointsLegend.vue";
 
 const store = useBoardStore();
 </script>
@@ -11,6 +12,7 @@ const store = useBoardStore();
       <div class="panelrow rounded-2" :class="['bg-' + store.colors[cidx] + '-subtle']">
         <button @click="store.markNumber(cidx, i)"
                 v-for="(v, i) in colNumbers"
+                :disabled="store.isFinished()"
                 :class="[v ? 'btn-secondary' : 'btn-light', v ? 'text-white' : 'text-' + store.colors[cidx], i > 0 ? 'ms-0': 'ms-1']"
                 class="squarebtn m-1">{{ cidx < 2 ? i + 2 : 12 - i }}
         </button>
@@ -19,26 +21,17 @@ const store = useBoardStore();
       <div class="panelrow rounded-circle" :class="['bg-' + store.colors[cidx] + '-subtle']">
         <button @click="store.markLock(cidx)"
                 :class="[store.locks[cidx] ? 'btn-secondary' : 'btn-light', store.locks[cidx] ? 'text-white' : 'text-' + store.colors[cidx]]"
+                :disabled="store.isFinished()"
                 class="squarebtn m-1 rounded-circle">
           <svg-icon type="mdi" :path="store.locks[cidx] ? mdiLock : mdiLockOpen"></svg-icon>
         </button>
       </div>
     </div>
     <div class="panelrow">
-      <div class="rounded-2 border border-light legend ms-2">
-        Kreuze
-        <hr/>
-        Punkte
-      </div>
-      <template v-for="(v, i) in store.pointsMap">
-        <div class="rounded-2 border border-secondary legend" v-if="i > 0">
-          {{ i }}
-          <hr/>
-          {{ v }}
-        </div>
-      </template>
+      <ThePointsLegend/>
       <button v-for="v in 4"
               @click="store.markFail()"
+              :disabled="store.isFinished()"
               :class="store.fails >= v ? 'btn-secondary': 'btn-light'"
               class="btn-outline-secondary squarebtn m-1">&nbsp;
       </button>
@@ -46,37 +39,24 @@ const store = useBoardStore();
     <div class="p-1 m-1 panelrow scorerow">
       Ergebnis
       <template v-for="(color, cidx) in store.colors">
-        <div class="mx-2 rounded-2 squarebtn bg-light border border-3 align-middle" :class="['border-' + color]"><p>
+        <div class="scorediv" :class="['border-' + color]"><p>
           {{ store.getColorScore(cidx) }}</p></div>
         {{ cidx < 3 ? '+' : '-' }}
       </template>
-      <div class="mx-2 rounded-2 squarebtn bg-light border border-3 border-secondary"><p>{{ store.getFailPoints() }}</p>
+      <div class="scorediv border-secondary"><p>{{ store.getFailPoints() }}</p>
       </div>
       =
-      <div class="mx-2 rounded-2 squarebtn bg-light border border-3 border-secondary"><p>{{ store.getScore() }}</p>
+      <div class="scorediv border-secondary"><p>{{ store.getScore() }}</p>
       </div>
     </div>
   </div>
 </template>
 
 <style scoped>
-hr {
-  margin: 0;
-  padding: 0;
-}
-
 .panelrow {
   display: flex;
   flex-direction: row;
   align-items: center;
-}
-
-.legend {
-  margin: 1px;
-  padding-left: 2px;
-  padding-right: 2px;
-  min-width: 1.9rem;
-  text-align: center;
 }
 
 .scorerow {

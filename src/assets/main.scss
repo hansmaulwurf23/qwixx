@@ -42,6 +42,16 @@ main {
     vertical-align: middle;
 }
 
+.scorediv {
+    @extend .mx-2;
+    @extend .rounded-2;
+    @extend .squarebtn;
+    @extend .bg-light;
+    @extend .border;
+    @extend .border-3;
+    min-width: 3.5rem;
+}
+
 #myErrorAlert {
     @extend .border;
     @extend .border-3;

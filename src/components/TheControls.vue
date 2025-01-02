@@ -14,7 +14,7 @@ const store = useBoardStore()
       <svg-icon type="mdi" :path="mdiUndo"></svg-icon>
     </button>
     <button class="squarebtn m-1" v-for="(c, i) in store.colors" :class="['bg-' + c, 'text-white']"
-    @click="store.markLockGlobally(i)">
+    @click="store.markLockGlobally(i)" :disabled="store.isFinished()">
       <svg-icon type="mdi" :path="mdiAccountLock"></svg-icon>
     </button>
   </div>
