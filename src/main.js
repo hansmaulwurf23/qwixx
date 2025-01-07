@@ -12,7 +12,7 @@ const app = createApp(App);
 app.component("svg-icon", SvgIcon);
 app.use(pinia);
 
-export const useBoardStore = defineStore("boardStore", () => {
+export const useBoardStore = defineStore("qwixxBoardStore", () => {
   const numbers = ref([
     new Array(11).fill(false),
     new Array(11).fill(false),
