@@ -11,7 +11,7 @@ const store = useBoardStore();
     <div v-for="(colNumbers, cidx) in store.numbers" class="p-1 m-1 panelrow" :class="['bg-' + store.colors[cidx]]">
       <div class="panelrow rounded-2" :class="['bg-' + store.colors[cidx] + '-subtle']">
         <button @click="store.markNumber(cidx, i)"
-                v-for="(v, i) in colNumbers"
+                v-for="(v, i) in colNumbers.value"
                 :disabled="store.isFinished()"
                 :class="[v ? 'btn-secondary' : 'btn-light', v ? 'text-white' : 'text-' + store.colors[cidx], i > 0 ? 'ms-0': 'ms-1']"
                 class="squarebtn m-1">{{ cidx < 2 ? i + 2 : 12 - i }}

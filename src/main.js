@@ -13,12 +13,12 @@ app.component("svg-icon", SvgIcon);
 app.use(pinia);
 
 export const useBoardStore = defineStore("qwixxBoardStore", () => {
-  const numbers = ref([
-    new Array(11).fill(false),
-    new Array(11).fill(false),
-    new Array(11).fill(false),
-    new Array(11).fill(false)
-  ]);
+  const numbers = [
+    ref(new Array(11).fill(false)),
+    ref(new Array(11).fill(false)),
+    ref(new Array(11).fill(false)),
+    ref(new Array(11).fill(false))
+  ];
 
   const locks = ref(new Array(4).fill(false))
   const otherLocks = ref(new Array(4).fill(false))
@@ -30,111 +30,110 @@ export const useBoardStore = defineStore("qwixxBoardStore", () => {
   const currentError = ref("")
 
   function newGame() {
-    for (let i = 0; i < this.numbers.length; i++) {
-      for (let j = 0; j <  this.numbers[i].length; j++) {
-        this.numbers[i][j] = false;
+    for (let i = 0; i < numbers.length; i++) {
+      for (let j = 0; j <  numbers[i].value.length; j++) {
+        numbers[i].value[j] = false;
       }
     }
 
-    this.fails = 0;
-    this.undoStack.length = 0;
-    for(let i = 0; i < this.locks.length; i++) {
-      this.locks[i] = false;
-      this.otherLocks[i] = false;
+    fails.value = 0;
+    undoStack.value.length = 0;
+    for(let i = 0; i < locks.value.length; i++) {
+      locks.value[i] = false;
+      otherLocks.value[i] = false;
     }
   }
 
   function markNumber(color, number) {
-    if (this.locks[color]) {
-      return this.setError('Die Farbe ist bereits gelockt!');
+    if (locks.value[color]) {
+      return setError('Die Farbe ist bereits gelockt!');
     }
-    let numbers = this.numbers[color];
-    if (numbers.slice(number).some((x) => x === true)) {
-      return this.setError('Es wurde bereits weiter rechts markiert!');
+    if (numbers[color].value.slice(number).some((x) => x === true)) {
+      return setError('Es wurde bereits weiter rechts markiert!');
     }
 
-    this.undoStack.push(['number', color, number]);
-    numbers[number] = true;
+    undoStack.value.push(['number', color, number]);
+    numbers[color].value[number] = true;
   }
 
   function markLock(color) {
-    if (this.locks[color]) {
-      return this.setError('Diese Farbe wurde bereits gelockt!');
+    if (locks.value[color]) {
+      return setError('Diese Farbe wurde bereits gelockt!');
     }
-    if (this.countColorMarks(color) < 5) {
-      return this.setError('Es sind nicht mindestens 5 Zahlen eingelockt!');
+    if (countColorMarks(color) < 5) {
+      return setError('Es sind nicht mindestens 5 Zahlen eingelockt!');
     }
-    if (!this.numbers[color].at(-1)) {
-      return this.setError('Der letzte Kasten muss angekreuzt sein!');
+    if (!numbers[color].value.at(-1)) {
+      return setError('Der letzte Kasten muss angekreuzt sein!');
     }
-    if (this.isFinished()) {
-      return this.setError('Es sind bereits zwei Reihen gelockt!');
+    if (isFinished()) {
+      return setError('Es sind bereits zwei Reihen gelockt!');
     }
 
-    this.undoStack.push(['lock', color, undefined]);
-    this.locks[color] = true;
+    undoStack.value.push(['lock', color, undefined]);
+    locks.value[color] = true;
   }
 
   function markLockGlobally(color) {
-    this.locks[color] = true;
-    this.otherLocks[color] = true;
-    this.undoStack.push(['globalLock', color, undefined]);
+    locks.value[color] = true;
+    otherLocks.value[color] = true;
+    undoStack.value.push(['globalLock', color, undefined]);
   }
 
   function markFail() {
-    if (this.fails === 4) {
-      return this.setError('Es sind nur 4 Fehlversuche erlaubt!');
+    if (fails.value === 4) {
+      return setError('Es sind nur 4 Fehlversuche erlaubt!');
     }
-    this.fails += 1;
-    this.undoStack.push(['fail', undefined, undefined]);
+    fails.value += 1;
+    undoStack.value.push(['fail', undefined, undefined]);
   }
 
   function countColorMarks(color) {
-    return this.numbers[color].filter(x => x === true).length;
+    return numbers[color].value.filter(x => x === true).length;
   }
 
   function getColorScore(color) {
-    return this.pointsMap[this.countColorMarks(color) + (this.locks[color] && !this.otherLocks[color] ? 1 : 0)];
+    return pointsMap.value[countColorMarks(color) + (locks.value[color] && !otherLocks.value[color] ? 1 : 0)];
   }
 
   function getFailPoints() {
-    return this.fails * 5;
+    return fails.value * 5;
   }
 
   function getScore() {
-    let score = -this.getFailPoints();
-    for (let i = 0; i < this.numbers.length; i++) {
-      score += this.getColorScore(i);
+    let score = -getFailPoints();
+    for (let i = 0; i < numbers.length; i++) {
+      score += getColorScore(i);
     }
     return score;
   }
 
   function isFinished() {
-    return this.locks.filter((l) => l === true).length === 2
+    return locks.value.filter((l) => l === true).length === 2
   }
 
   function undo() {
-    if (this.undoStack.length > 0) {
-      let [action, arg1, arg2] = this.undoStack.pop();
+    if (undoStack.value.length > 0) {
+      let [action, arg1, arg2] = undoStack.value.pop();
       if (action === 'fail') {
-        this.fails -= 1;
+        fails.value -= 1;
       } else if (action === 'globalLock') {
-        this.locks[arg1] = false;
-        this.otherLocks[arg1] = false;
+        locks.value[arg1] = false;
+        otherLocks.value[arg1] = false;
       } else if (action === 'lock') {
-        this.locks[arg1] = false;
+        locks.value[arg1] = false;
       } else if (action === 'number') {
-        this.numbers[arg1][arg2] = false;
+        numbers[arg1].value[arg2] = false;
       }
     }
   }
 
   function setError(msg) {
-    this.currentError = msg;
+    currentError.value = msg;
   }
 
   function unsetError() {
-    this.currentError = undefined;
+    currentError.value = undefined;
   }
 
   return {
