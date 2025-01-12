@@ -1,6 +1,6 @@
 # qwixx
 
-qwixx game score card with Vue 3 in Vite.
+Score card for the game QWIXX as a pwa app.
 
 ## Customize configuration
 
