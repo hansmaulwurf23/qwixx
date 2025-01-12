@@ -1,5 +1,7 @@
 # qwixx
 
+![example workflow](https://github.com/hansmaulwurf23/qwixx/actions/workflows/node.js.yml/badge.svg)
+
 Score card for the game QWIXX as a pwa app.
 
 ## Customize configuration
