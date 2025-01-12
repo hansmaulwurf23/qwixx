@@ -6,16 +6,16 @@ const store = useBoardStore()
 </script>
 
 <template>
-  <div class="controlsContainer">
+  <div class="controlsContainer my-2">
+    <button class="squarebtn m-1" v-for="(c, i) in store.colors" :class="['bg-' + c, 'text-white']"
+    @click="store.markLockGlobally(i)" :disabled="store.isFinished()">
+      <svg-icon type="mdi" :path="mdiAccountLock"></svg-icon>
+    </button>
     <button class="squarebtn btn-secondary m-1" @click="store.newGame()">
       <svg-icon type="mdi" :path="mdiRestart"></svg-icon>
     </button>
     <button class="squarebtn btn-secondary m-1" @click="store.undo()">
       <svg-icon type="mdi" :path="mdiUndo"></svg-icon>
-    </button>
-    <button class="squarebtn m-1" v-for="(c, i) in store.colors" :class="['bg-' + c, 'text-white']"
-    @click="store.markLockGlobally(i)" :disabled="store.isFinished()">
-      <svg-icon type="mdi" :path="mdiAccountLock"></svg-icon>
     </button>
   </div>
 </template>
@@ -25,5 +25,6 @@ const store = useBoardStore()
   display: flex;
   flex-direction: column;
   align-items: center;
+  justify-content: space-between;
 }
 </style>
