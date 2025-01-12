@@ -29,12 +29,13 @@ const store = useBoardStore();
     </div>
     <div class="panelrow">
       <ThePointsLegend/>
-      <button v-for="v in 4"
-              @click="store.markFail()"
-              :disabled="store.isFinished()"
-              :class="store.fails >= v ? 'btn-secondary': 'btn-light'"
-              class="btn-outline-secondary squarebtn m-1">&nbsp;
-      </button>
+      <div @click="store.markFail()">
+        <button v-for="v in 4"
+                :disabled="store.isFinished()"
+                :class="store.fails >= v ? 'btn-secondary': 'btn-light'"
+                class="btn-outline-secondary squarebtn m-1">&nbsp;
+        </button>
+      </div>
     </div>
     <div class="p-1 m-1 panelrow scorerow">
       Ergebnis
